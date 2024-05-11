@@ -66,9 +66,16 @@ public enum CSSValue: Equatable {
     static func parseStringToken(_ token: CSSToken, attributeToken: CSSToken, validationConfiguration: CSSValidationConfiguration) throws -> CSSValue {
         guard token.type == .string else { throw CSSParserErrors.invalidToken(token) }
         
-        //        if !token.literalString {
-        //            return try validationConfiguration.parseKeyword(attributeToken: attributeToken, potentialKeyword: token)
-        //        }
+        if !token.literalString {
+            return try validationConfiguration.parseKeyword(attributeToken: attributeToken, potentialKeyword: token)
+        }
+        
+        return .string(token.value as! String)
+    }
+    
+
+    static func parseAnyStringToken(_ token: CSSToken, attributeToken: CSSToken, validationConfiguration: CSSValidationConfiguration) throws -> CSSValue {
+        guard token.type == .string else { throw CSSParserErrors.invalidToken(token) }
         
         if let value = token.value as? String
         {
